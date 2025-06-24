@@ -3,8 +3,10 @@
 #include <stdlib.h>
 
 #include "tampilkanJadwal_Harian.h"
+#include "program_buat_jadwal.h"
+
 // jadwal harian
-void tampilkanJadwal_Harian(jadwal* head_jadwal) {
+void tampilkanJadwal_Harian() {
     int tanggalCari;
     printf("\n╔════════════════════════════════════════════════════╗");
     printf("\n║               📅 TAMPILKAN JADWAL HARIAN           ║");
