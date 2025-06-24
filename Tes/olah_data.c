@@ -59,23 +59,34 @@ void simpanFile() {
 
 // Menampilkan daftar dokter
 void tampilkanData() {
-    printf("\n=== Daftar Dokter ===\n");
-    printf("No\tNama\t\tMaksimalShift\tPreferensiShift\n");
+    printf("\n+===========================================================+\n");
+    printf("|                      DAFTAR DOKTER                        |\n");
+    printf("+=====+=======================+=============+===============+\n");
+    printf("| ID  | Nama Dokter           | Max Shift   | Pref. Shift   |\n");
+    printf("+=====+=======================+=============+===============+\n");
     for (int i = 0; i < jumlah; i++) {
-        printf("%d\t%-15s\t%d\t\t%d\n",
+        printf("| %-3d | %-21s | %-11d | %-13d |\n",
                data[i].ID,
                data[i].Nama,
                data[i].MaxShift,
                data[i].PrefShift);
     }
+    if (jumlah == 0) {
+        printf("|     Tidak ada data dokter yang tersedia.                |\n");
+    }
+    printf("+=====+=======================+=============+===============+\n");
 }
 
 // Menambahkan data dokter
 void tambahDokter() {
     if (jumlah >= MAX) {
-        printf("Data penuh.\n");
+        printf("Data penuh. Tidak dapat menambah dokter baru.\n");
         return;
     }
+
+    printf("\n+---------------------------+\n");
+    printf("|        TAMBAH DOKTER      |\n");
+    printf("+---------------------------+\n");
 
     printf("Masukkan nama dokter: ");
     scanf(" %[^\n]", data[jumlah].Nama);
@@ -85,9 +96,14 @@ void tambahDokter() {
 
     printf(
         "Masukkan preferensi shift (0–6):\n"
-        "Pagi = 0\nSiang = 1\nMalam = 2\n"
-        "Pagi Siang = 3\nPagi Malam = 4\nSiang Malam = 5\n"
-        "Waktu Bebas = 6\nPilihan: "
+        "  0 = Pagi\n"
+        "  1 = Siang\n"
+        "  2 = Malam\n"
+        "  3 = Pagi + Siang\n"
+        "  4 = Pagi + Malam\n"
+        "  5 = Siang + Malam\n"
+        "  6 = Bebas\n"
+        "Pilihan: "
     );
     scanf("%d", &data[jumlah].PrefShift);
 
@@ -100,12 +116,17 @@ void tambahDokter() {
     jumlah++;
 
     simpanFile();
-    printf("Data berhasil ditambahkan.\n");
+    printf("Data dokter berhasil ditambahkan.\n");
 }
 
 // Menghapus dokter berdasarkan nama
 void hapusDokter() {
     char nama[50];
+
+    printf("\n+---------------------------+\n");
+    printf("|        HAPUS DOKTER       |\n");
+    printf("+---------------------------+\n");
+
     printf("Masukkan nama dokter yang ingin dihapus: "); 
     scanf(" %[^\n]", nama);
 
@@ -118,7 +139,7 @@ void hapusDokter() {
     }
 
     if (index == -1) {
-        printf("Dokter tidak ditemukan.\n");
+        printf("Dokter \"%s\" tidak ditemukan.\n", nama);
         return;
     }
 
@@ -127,7 +148,7 @@ void hapusDokter() {
     }
     jumlah--;
 
-    // Update ulang no agar tetap terurut
+    // Perbarui ulang ID agar tetap urut
     for (int i = 0; i < jumlah; i++) {
         data[i].ID = i + 1;
     }
