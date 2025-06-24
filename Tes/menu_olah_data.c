@@ -5,6 +5,7 @@
 #include "olah_data.h"
 
 void menu_olah_data() {
+    bacaFile();
     int pilihan;
     
     while (1) {
