@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include "menu_olah_data.h"
-#include "mainprogram2.h"
+#include "program_buat_jadwal.h"
 #include "menu_tampilkan_jadwal.h"
 
 int main() {
