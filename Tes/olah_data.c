@@ -47,9 +47,9 @@ void simpanFile() {
         return;
     }
 
-    fprintf(file, "ID;Nama;PrefShift;MaxShift\n");
+    fprintf(file, "ID,Nama,PrefShift,MaxShift\n");
     for (int i = 0; i < jumlah; i++) {
-        fprintf(file, "%d;%s;%d;%d\n",
+        fprintf(file, "%d,%s,%d,%d\n",
                 data[i].ID, data[i].Nama,
                 data[i].PrefShift, data[i].MaxShift);
     }
