@@ -2,34 +2,35 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "MenampilkanJadwal_Harian.h"
+#include "tampilkanJadwal_Harian.h"
 // jadwal harian
-void tampilkanJadwal_Harian(hari* head) {
-    int nomorHari;
+void tampilkanJadwal_Harian(jadwal* head_jadwal) {
+    int tanggalCari;
     printf("\n╔════════════════════════════════════════════════════╗");
     printf("\n║               📅 TAMPILKAN JADWAL HARIAN           ║");
     printf("\n╚════════════════════════════════════════════════════╝");
-    printf("\nMasukkan nomor hari (1 - 30): ");
-    scanf("%d", &nomorHari);
+    printf("\nMasukkan tanggal yang ingin ditampilkan (1 - 30): ");
+    scanf("%d", &tanggalCari);
 
-    if (nomorHari < 1) {
-        printf("❌ Error: Nomor hari tidak valid.\n");
+    if (tanggalCari < 1 || tanggalCari > 30) {
+        printf("❌ Error: Tanggal tidak valid.\n");
         return;
     }
 
-    // Hitung indeks dalam 7 hari (0 sampai 6)
-    int indeks = (nomorHari - 1) % 7;
+    // Cari node dengan tanggal sesuai
+    jadwal* current = head_jadwal;
+    while (current != NULL && current->tanggal != tanggalCari) {
+        current = current->next;
+    }
 
-    // Akses node ke-indeks dari linked list
-    hari* current = head;
-    for (int i = 0; i < indeks; i++) {
-        if (current->next != NULL)
-            current = current->next;
+    if (!current) {
+        printf("❌ Jadwal untuk tanggal %d tidak ditemukan.\n", tanggalCari);
+        return;
     }
 
     // Header
     printf("\n╔════════════════════════════════════════════════════╗");
-    printf("\n║             🗓️  JADWAL UNTUK HARI KE-%-3d          ║", nomorHari);
+    printf("\n║             🗓️  JADWAL UNTUK TANGGAL %-3d           ║", tanggalCari);
     printf("\n╚════════════════════════════════════════════════════╝");
 
     char buffer[64];
