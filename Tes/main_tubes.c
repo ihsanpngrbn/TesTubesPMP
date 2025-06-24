@@ -10,12 +10,15 @@ int main() {
     int pilihan;
     
     while (1) {
-        printf("\nSistem Informasi Jadwal Dokter\n");
-        printf("1. Olah Data Dokter\n");
-        printf("2. Buat Jadwal\n");
-        printf("3. Tampilkan Jadwal\n");
-        printf("4. Keluar\n");
-        printf("Masukkan pilihan (1-4): ");
+    printf("\n+--------------------------------------------------+");
+    printf("\n|         SISTEM INFORMASI JADWAL DOKTER          |");
+    printf("\n+--------------------------------------------------+");
+    printf("\n|  1. Olah Data Dokter                            |");
+    printf("\n|  2. Buat Jadwal                                 |");
+    printf("\n|  3. Tampilkan Jadwal                            |");
+    printf("\n|  4. Keluar                                      |");
+    printf("\n+--------------------------------------------------+");
+    printf("\nMasukkan pilihan Anda (1 - 4): ");
         scanf("%d", &pilihan);
         
         switch (pilihan) {
