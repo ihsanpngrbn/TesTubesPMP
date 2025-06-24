@@ -25,6 +25,7 @@ typedef struct jadwal {
 
 extern dokter *head_dokter;
 extern jadwal *head_jadwal;
+extern int pelanggaran_preferensi;
 
 // Fungsi untuk membuat node dokter baru
 dokter* createDokter(int id, const char* nama, int maxshift, int prefShift);
