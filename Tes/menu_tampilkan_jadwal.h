@@ -5,8 +5,8 @@
 #include <stdlib.h>   // Untuk fungsi utilitas umum
 #include <string.h>   // Untuk manipulasi string
 
-#include "MenampilkanJadwal_Harian.h"
-#include "MenampilkanJadwal_Mingguan.h"
+#include "tampilkanJadwal_Harian.h"
+#include "tampilkanJadwal_Mingguan.h"
 
 // Deklarasi fungsi menu_tampilkan_jadwal
 void menu_tampilkan_jadwal();
