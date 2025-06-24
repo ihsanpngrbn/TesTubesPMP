@@ -14,15 +14,19 @@ void menu_tampilkan_jadwal() {
     int pilihan;
     
     while (1) {
-        printf("\nTampilkan Jadwal\n");
-        printf("1. Tampilkan Jadwal Harian\n");
-        printf("2. Tampilkan Jadwal Mingguan\n");
-        printf("3. Tampilkan Jadwal Bulanan\n");
-        printf("4. Tampilkan Jumlah Pelanggaran\n");
-        printf("5. Tampilkan Jumlah Shift Masing-Masing Dokter\n");
-        printf("6. Kembali ke Menu Utama\n");
-        printf("Masukkan pilihan (1-6): ");
+        printf("\n+==============================================================+\n");
+        printf("|                    MENU TAMPILKAN JADWAL                    |\n");
+        printf("+==============================================================+\n");
+        printf("| 1. Tampilkan Jadwal Harian                                  |\n");
+        printf("| 2. Tampilkan Jadwal Mingguan                                |\n");
+        printf("| 3. Tampilkan Jadwal Bulanan                                 |\n");
+        printf("| 4. Tampilkan Jumlah Pelanggaran                             |\n");
+        printf("| 5. Tampilkan Jumlah Shift Masing-Masing Dokter              |\n");
+        printf("| 6. Kembali ke Menu Utama                                    |\n");
+        printf("+==============================================================+\n");
+        printf("Masukkan pilihan Anda (1 - 6): ");
         scanf("%d", &pilihan);
+        printf("\n");
         
         switch (pilihan) {
             case 1:
