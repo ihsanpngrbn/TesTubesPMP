@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "tampilkanJadwal_Bulanan.h"
+#include "tampilkanJadwal_Bulanan.h" 
 
 #define JADWAL_FILE_NAME "Jadwal_Dokter.csv"
 
@@ -13,7 +13,7 @@
 
 typedef struct {
     int tanggal;
-    char shift[10];      // Contoh: "Pagi", "Siang", "Malam"
+    char shift[10];      
     int slot;
     int id_dokter;
     char nama_dokter[50];
@@ -32,24 +32,25 @@ void tampilkanJadwal_Bulanan() {
     }
 
     char line[256];
-    fgets(line, sizeof(line), file); // Skip header 
-    // Penyimpanan sementara untuk semua data jadwal dari CSV (maks 30 hari)
-    // schedule_data_from_csv[day_index_0_to_29][shift_type_index][slot_index][string_buffer]
-    char schedule_data_from_csv[TOTAL_MONTH_DAYS][SHIFTS_PER_DAY][SLOTS_PER_SHIFT][64];
+    fgets(line, sizeof(line), file); // Skip header baris pertama dari CSV
 
-    // Inisialisasi semua slot sebagai "[Kosong]"
-    for(int d = 0; d < TOTAL_MONTH_DAYS; d++) {
+    // Penyimpanan sementara untuk DATA SUMBER 7 hari saja dari CSV
+    // schedule_data_source[day_index_0_to_6][shift_type_index][slot_index][string_buffer]
+    char schedule_data_source[DAYS_IN_CYCLE][SHIFTS_PER_DAY][SLOTS_PER_SHIFT][64];
+
+    // Inisialisasi semua slot sebagai "[Kosong]" untuk 7 hari sumber
+    for(int d = 0; d < DAYS_IN_CYCLE; d++) {
         for(int s = 0; s < SHIFTS_PER_DAY; s++) {
             for(int i = 0; i < SLOTS_PER_SHIFT; i++) {
-                strcpy(schedule_data_from_csv[d][s][i], "- [Kosong]");
+                strcpy(schedule_data_source[d][s][i], "- [Kosong]");
             }
         }
     }
 
-    // Baca dan parse file CSV untuk mengisi data ke penyimpanan sementara
+    // Baca dan parse file CSV untuk mengisi data SUMBER 7 hari
     while (fgets(line, sizeof(line), file) != NULL) {
         JadwalEntry entry;
-        // Gunakan koma (,) sebagai delimiter sesuai format Jadwal_Dokter.csv
+        // Gunakan koma (,) sebagai delimiter
         int items_parsed = sscanf(line, "%d,%[^,],%d,%d,%[^\n]",
                                   &entry.tanggal,
                                   entry.shift,
@@ -57,8 +58,8 @@ void tampilkanJadwal_Bulanan() {
                                   &entry.id_dokter,
                                   entry.nama_dokter);
         
-        // Pastikan parsing berhasil dan tanggal dalam rentang yang diharapkan
-        if (items_parsed >= 4 && entry.tanggal >= 1 && entry.tanggal <= TOTAL_MONTH_DAYS) {
+        // Hanya ambil data untuk hari ke-1 sampai hari ke-7 dari CSV
+        if (items_parsed >= 4 && entry.tanggal >= 1 && entry.tanggal <= DAYS_IN_CYCLE) {
             char doc_info[64];
             if (items_parsed == 5) { // Jika ada nama dokter (slot terisi)
                 snprintf(doc_info, sizeof(doc_info), "- %s (ID:%d)", entry.nama_dokter, entry.id_dokter);
@@ -72,13 +73,12 @@ void tampilkanJadwal_Bulanan() {
             else if (strcmp(entry.shift, "Malam") == 0) shift_idx = 2;
 
             if (shift_idx != -1 && entry.slot >= 1 && entry.slot <= SLOTS_PER_SHIFT) {
-                // Simpan info dokter ke posisi yang benar di array schedule_data_from_csv
-                // entry.tanggal - 1 karena array 0-indexed
-                strcpy(schedule_data_from_csv[entry.tanggal - 1][shift_idx][entry.slot - 1], doc_info);
+                // Simpan info dokter ke posisi yang benar di array sumber (0-indexed)
+                strcpy(schedule_data_source[entry.tanggal - 1][shift_idx][entry.slot - 1], doc_info);
             }
         }
     }
-    fclose(file);
+    fclose(file); // Tutup file setelah selesai membaca
 
     // Array nama hari untuk siklus 7 hari (misal: hari ke-1 adalah Senin)
     const char* namaHari[DAYS_IN_CYCLE] = {"Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"};
@@ -92,17 +92,16 @@ void tampilkanJadwal_Bulanan() {
         int day1_num = i + 1; // Nomor hari untuk kolom kiri (1, 2, ..., 15)
         int day2_num = i + 1 + TOTAL_MONTH_DAYS / 2; // Nomor hari untuk kolom kanan (16, 17, ..., 30)
 
-        // Tentukan indeks data sumber dari schedule_data_from_csv untuk kolom kiri
-        int source_idx_day1 = day1_num - 1; // Default: gunakan data dari hari itu sendiri
-        if (day1_num == 29) source_idx_day1 = 0; // Jika Hari 29, pakai data Hari 1
-        else if (day1_num == 30) source_idx_day1 = 1; // Jika Hari 30, pakai data Hari 2
+        // Tentukan indeks data sumber dari schedule_data_source (0-6) untuk kolom kiri
+        // Dengan ((day_num - 1) % DAYS_IN_CYCLE) akan secara otomatis memetakan
+        // 1->0, 8->0, 29->0 (untuk hari ke-1)
+        // 2->1, 9->1, 30->1 (untuk hari ke-2)
+        int source_idx_day1 = (day1_num - 1) % DAYS_IN_CYCLE;
 
-        // Tentukan indeks data sumber dari schedule_data_from_csv untuk kolom kanan
+        // Tentukan indeks data sumber untuk kolom kanan
         int source_idx_day2 = -1; // Inisialisasi -1 jika kolom kanan tidak ada
         if (day2_num <= TOTAL_MONTH_DAYS) { // Pastikan hari kedua masih dalam rentang bulan
-            source_idx_day2 = day2_num - 1; // Default: gunakan data dari hari itu sendiri
-            if (day2_num == 29) source_idx_day2 = 0;
-            else if (day2_num == 30) source_idx_day2 = 1;
+            source_idx_day2 = (day2_num - 1) % DAYS_IN_CYCLE;
         }
 
         // Tentukan nama hari dalam siklus 7 hari untuk ditampilkan di header
@@ -152,11 +151,11 @@ void tampilkanJadwal_Bulanan() {
 
             for (int slot = 0; slot < SLOTS_PER_SHIFT; slot++) {
                 // Konten kolom kiri
-                printf("| %-42s |   ", schedule_data_from_csv[source_idx_day1][s][slot]);
+                printf("| %-42s |   ", schedule_data_source[source_idx_day1][s][slot]);
 
                 // Konten kolom kanan (jika ada)
                 if (day2_num <= TOTAL_MONTH_DAYS) {
-                    printf("| %-42s |\n", schedule_data_from_csv[source_idx_day2][s][slot]);
+                    printf("| %-42s |\n", schedule_data_source[source_idx_day2][s][slot]);
                 } else {
                     printf("\n");
                 }
