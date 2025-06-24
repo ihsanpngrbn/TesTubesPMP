@@ -119,9 +119,9 @@ void tampilkanJadwal_Bulanan() {
         }
 
         // Header kolom: Tanggal dan Nama Hari
-        printf("| Tanggal %-2d                      |   ", day1_num);
+        printf("| Tanggal %-2d                            |   ", day1_num);
         if (day2_num <= TOTAL_MONTH_DAYS) {
-            printf("| Tanggal %-2d                      |\n", day2_num);
+            printf("| Tanggal %-2d                            |\n", day2_num);
         } else {
             printf("\n");
         }
