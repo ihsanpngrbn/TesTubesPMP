@@ -381,21 +381,24 @@ void freeJadwal() {
     }
 }
 
-void program_buat_jadwal() {
+int program_buat_jadwal() {
     int pelanggaran_preferensi = 0;
     srand(time(NULL));
-    const char* csv_filename = "data_dokter.csv";
+    const char* csv_filename = "Data_Dokter.csv";
+    
     openfileDokter(csv_filename);
     if (head_dokter == NULL) {
         printf("Tidak dapat memperoleh data dokter.\n");
-        return 1;
+        return 1; // Mengembalikan 1 (gagal) jika head_dokter NULL
     }
-    inisialisasiJadwal(7);
+    inisialisasiJadwal(7); 
     buatJadwal();
     if (checkEmpty()) {
         randomtoEmpty(&pelanggaran_preferensi);
-    }  
+    }
     simpanJadwalKeCSV("JadwalDokter.csv");
     freeDokter();
     freeJadwal();
+
+    return 0; // Mengembalikan 0 (sukses) jika semua berjalan lancar
 }
