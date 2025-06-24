@@ -1,77 +1,101 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
-#include "tampilkanJadwal_Harian.h"
-#include "program_buat_jadwal.h"
+#define JADWAL_FILE_NAME "Jadwal_Dokter.csv"
 
-// jadwal harian
+typedef struct {
+    int tanggal;
+    char shift[10];
+    int slot;
+    int id_dokter;
+    char nama_dokter[50];
+} JadwalEntry;
+
 void tampilkanJadwal_Harian() {
     int tanggalCari;
-    printf("\n╔════════════════════════════════════════════════════╗");
-    printf("\n║               📅 TAMPILKAN JADWAL HARIAN           ║");
-    printf("\n╚════════════════════════════════════════════════════╝");
+    printf("\n+----------------------------------------------------+");
+    printf("\n|             TAMPILKAN JADWAL HARIAN                |");
+    printf("\n+----------------------------------------------------+");
     printf("\nMasukkan tanggal yang ingin ditampilkan (1 - 30): ");
     scanf("%d", &tanggalCari);
 
-    if (tanggalCari < 1 || tanggalCari > 30) {
-        printf("❌ Error: Tanggal tidak valid.\n");
+    if (tanggalCari < 1) {
+        printf("X Error: Tanggal tidak valid.\n");
         return;
     }
 
-    // Cari node dengan tanggal sesuai
-    jadwal* current = head_jadwal;
-    while (current != NULL && current->tanggal != tanggalCari) {
-        current = current->next;
-    }
+    int mapped_tanggal = ((tanggalCari - 1) % 7) + 1;
 
-    if (!current) {
-        printf("❌ Jadwal untuk tanggal %d tidak ditemukan.\n", tanggalCari);
+    FILE *file = fopen(JADWAL_FILE_NAME, "r");
+    if (!file) {
+        perror("Error: Gagal membuka file Jadwal_Dokter.csv");
+        printf("Pastikan file '%s' ada di direktori yang sama dengan executable.\n", JADWAL_FILE_NAME);
         return;
     }
 
-    // Header
-    printf("\n╔════════════════════════════════════════════════════╗");
-    printf("\n║             🗓️  JADWAL UNTUK TANGGAL %-3d           ║", tanggalCari);
-    printf("\n╚════════════════════════════════════════════════════╝");
+    char line[256];
+    fgets(line, sizeof(line), file); // Skip header
 
-    char buffer[64];
+    char pagi_docs[5][64];
+    char siang_docs[5][64];
+    char malam_docs[5][64];
 
-    // Shift Pagi
-    printf("\n\n🔹 SHIFT PAGI\n");
-    printf("────────────────────────────────────────────────────\n");
-    for (int i = 0; i < 5; i++) {
-        if (current->pagi[i]) {
-            snprintf(buffer, sizeof(buffer), "• %s (ID:%d)", current->pagi[i]->nama, current->pagi[i]->id);
-            printf("%-50s\n", buffer);
-        } else {
-            printf("• [Kosong]\n");
-        }
+    for(int i = 0; i < 5; i++) {
+        strcpy(pagi_docs[i], "- [Kosong]");
+        strcpy(siang_docs[i], "- [Kosong]");
+        strcpy(malam_docs[i], "- [Kosong]");
     }
 
-    // Shift Siang
-    printf("\n🔸 SHIFT SIANG\n");
-    printf("────────────────────────────────────────────────────\n");
-    for (int i = 0; i < 5; i++) {
-        if (current->siang[i]) {
-            snprintf(buffer, sizeof(buffer), "• %s (ID:%d)", current->siang[i]->nama, current->siang[i]->id);
-            printf("%-50s\n", buffer);
-        } else {
-            printf("• [Kosong]\n");
+    while (fgets(line, sizeof(line), file) != NULL) {
+        JadwalEntry entry;
+        int items_parsed = sscanf(line, "%d,%[^,],%d,%d,%[^\n]",
+                                  &entry.tanggal,
+                                  entry.shift,
+                                  &entry.slot,
+                                  &entry.id_dokter,
+                                  entry.nama_dokter);
+        
+        if (items_parsed >= 4 && entry.tanggal == mapped_tanggal) {
+            char doc_info[64];
+            if (items_parsed == 5) {
+                snprintf(doc_info, sizeof(doc_info), "- %s (ID:%d)", entry.nama_dokter, entry.id_dokter);
+            } else {
+                strcpy(doc_info, "- [Kosong]");
+            }
+
+            if (strcmp(entry.shift, "Pagi") == 0 && entry.slot >= 1 && entry.slot <= 5) {
+                strcpy(pagi_docs[entry.slot - 1], doc_info);
+            } else if (strcmp(entry.shift, "Siang") == 0 && entry.slot >= 1 && entry.slot <= 5) {
+                strcpy(siang_docs[entry.slot - 1], doc_info);
+            } else if (strcmp(entry.shift, "Malam") == 0 && entry.slot >= 1 && entry.slot <= 5) {
+                strcpy(malam_docs[entry.slot - 1], doc_info);
+            }
         }
     }
+    fclose(file);
 
-    // Shift Malam
-    printf("\n🌙 SHIFT MALAM\n");
-    printf("────────────────────────────────────────────────────\n");
+    printf("\n+----------------------------------------------------+");
+    printf("\n|                  JADWAL TANGGAL %-3d                |", tanggalCari);
+    printf("\n+----------------------------------------------------+");
+
+    printf("\n\n-- SHIFT PAGI\n");
+    printf("----------------------------------------------------\n");
     for (int i = 0; i < 5; i++) {
-        if (current->malam[i]) {
-            snprintf(buffer, sizeof(buffer), "• %s (ID:%d)", current->malam[i]->nama, current->malam[i]->id);
-            printf("%-50s\n", buffer);
-        } else {
-            printf("• [Kosong]\n");
-        }
+        printf("%s\n", pagi_docs[i]);
     }
 
-    printf("────────────────────────────────────────────────────\n");
+    printf("\n-- SHIFT SIANG\n");
+    printf("----------------------------------------------------\n");
+    for (int i = 0; i < 5; i++) {
+        printf("%s\n", siang_docs[i]);
+    }
+
+    printf("\n-- SHIFT MALAM\n");
+    printf("----------------------------------------------------\n");
+    for (int i = 0; i < 5; i++) {
+        printf("%s\n", malam_docs[i]);
+    }
+
+    printf("----------------------------------------------------\n");
 }
