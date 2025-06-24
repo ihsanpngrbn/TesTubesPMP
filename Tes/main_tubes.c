@@ -25,8 +25,11 @@ int main() {
                 break;
                 
             case 2:
-                program_buat_jadwal()
-
+                int status = program_buat_jadwal();
+                if (status != 0) {
+                    printf("Gagal membuat jadwal.\n");
+                }
+                program_buat_jadwal(); 
                 break;
                 
             case 3:
