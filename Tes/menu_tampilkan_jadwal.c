@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "MenampilkanJadwal_Harian.h"
-#include "MenampilkanJadwal_Mingguan.h"
+#include "tampilkanJadwal_Harian.h"
+#include "tampilkanJadwal_Mingguan.h"
 
 
 void menu_tampilkan_jadwal() {
