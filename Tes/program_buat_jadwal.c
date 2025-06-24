@@ -20,6 +20,8 @@ typedef struct jadwal {
     struct jadwal *next;
 } jadwal;
 
+int pelanggaran_preferensi = 0;
+
 dokter *head_dokter = NULL;
 jadwal *head_jadwal = NULL;
 
@@ -341,7 +343,7 @@ void freeJadwal() {
 }
 
 int program_buat_jadwal() {
-    int pelanggaran_preferensi = 0;
+    pelanggaran_preferensi = 0;
     srand(time(NULL));
     const char* csv_filename = "Data_Dokter.csv";
     
