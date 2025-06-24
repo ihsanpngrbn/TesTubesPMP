@@ -21,7 +21,7 @@ void menu_tampilkan_jadwal() {
         printf("4. Tampilkan Jumlah Pelanggaran\n");
         printf("5. Tampilkan Jumlah Shift Masing-Masing Dokter\n");
         printf("6. Kembali ke Menu Utama\n");
-        printf("Masukkan pilihan (1-3): ");
+        printf("Masukkan pilihan (1-6): ");
         scanf("%d", &pilihan);
         
         switch (pilihan) {
