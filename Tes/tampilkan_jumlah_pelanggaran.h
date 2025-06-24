@@ -4,6 +4,6 @@
 #include <stdio.h> 
 #include "program_buat_jadwal.h" 
 
-void tampilkanJumlahPelanggaran();
+void tampilkan_jumlah_pelanggaran();
 
 #endif // TAMPILKAN_JUMLAH_PELANGGARAN_H
