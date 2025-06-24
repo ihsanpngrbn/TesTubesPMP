@@ -3,7 +3,9 @@
 
 #include <stdio.h>   
 #include <stdlib.h>  
-#include <string.h>  
+#include <string.h>
+
+void bacaFile();
 
 // Fungsi untuk menambahkan data dokter baru
 void tambahDokter();
