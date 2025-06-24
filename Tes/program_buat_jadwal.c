@@ -321,47 +321,6 @@ void simpanJadwalKeCSV(const char* namaFile) {
     printf("\nJadwal telah berhasil disimpan ke file: %s\n", namaFile);
 }
 
-void printJadwal() {
-    printf("========================================= WEEKLY SCHEDULE =========================================\n");
-    for (jadwal* day = head_jadwal; day != NULL; day = day->next) {
-        printf("\n------------------------------------------- DAY %d -------------------------------------------\n", day->tanggal);
-        char buffer[64];
-        // Pagi
-        printf("Pagi:\t");
-        for (int i = 0; i < 5; i++) {
-            if (day->pagi[i]) {
-                snprintf(buffer, sizeof(buffer), "%s (ID:%d)", day->pagi[i]->nama, day->pagi[i]->id);
-                printf("%-22s\t", buffer);
-            } else {
-                printf("%-22s\t", "[Empty]");
-            }
-        }
-        printf("\n");
-        // Siang
-        printf("Siang:\t");
-        for (int i = 0; i < 5; i++) {
-            if (day->siang[i]) {
-                snprintf(buffer, sizeof(buffer), "%s (ID:%d)", day->siang[i]->nama, day->siang[i]->id);
-                printf("%-22s\t", buffer);
-            } else {
-                printf("%-22s\t", "[Empty]");
-            }
-        }
-        printf("\n");
-        // Malam
-        printf("Malam:\t");
-        for (int i = 0; i < 5; i++) {
-            if (day->malam[i]) {
-                snprintf(buffer, sizeof(buffer), "%s (ID:%d)", day->malam[i]->nama, day->malam[i]->id);
-                printf("%-22s\t", buffer);
-            } else {
-                printf("%-22s\t", "[Empty]");
-            }
-        }
-        printf("\n");
-    }
-    printf("===================================================================================================\n");
-}
 
 void freeDokter() {
     dokter *current = head_dokter, *next;
