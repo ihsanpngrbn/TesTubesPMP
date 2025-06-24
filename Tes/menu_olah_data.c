@@ -9,13 +9,17 @@ void menu_olah_data() {
     int pilihan;
     
     while (1) {
-        printf("\nOlah Data Dokter\n");
-        printf("1. Tambah Dokter\n");
-        printf("2. Hapus Dokter\n");
-        printf("3. Tampilkan Dokter\n");
-        printf("4. Kembali ke Menu Utama\n");
-        printf("Masukkan pilihan (1-4): ");
+        printf("\n+===========================================+\n");
+        printf("|              OLAH DATA DOKTER            |\n");
+        printf("+===========================================+\n");
+        printf("| 1. Tambah Dokter                         |\n");
+        printf("| 2. Hapus Dokter                          |\n");
+        printf("| 3. Tampilkan Daftar Dokter               |\n");
+        printf("| 4. Kembali ke Menu Utama                 |\n");
+        printf("+===========================================+\n");
+        printf("Pilih Menu (1 - 4): ");
         scanf("%d", &pilihan);
+        printf("\n");
         
         switch (pilihan) {
             case 1:
