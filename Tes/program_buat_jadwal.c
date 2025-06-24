@@ -396,7 +396,7 @@ int program_buat_jadwal() {
     if (checkEmpty()) {
         randomtoEmpty(&pelanggaran_preferensi);
     }
-    simpanJadwalKeCSV("JadwalDokter.csv");
+    simpanJadwalKeCSV("Jadwal_Dokter.csv");
     freeDokter();
     freeJadwal();
 
