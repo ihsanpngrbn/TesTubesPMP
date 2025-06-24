@@ -25,7 +25,7 @@ int main() {
                 break;
                 
             case 2:
-                main2()
+                program_buat_jadwal()
 
                 break;
                 
