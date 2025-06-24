@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "olahdata.h"
+#include "olah_data.h"
 
 void menu_olah_data() {
     int pilihan;
