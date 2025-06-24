@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#include "tampilkanJadwal_Mingguan.h"
 #include "program_buat_jadwal.h"
 
 void tampilkanJadwal_Mingguan() {
