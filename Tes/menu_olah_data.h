@@ -6,6 +6,7 @@
 #include <string.h>
 
 void bacaFile();
+void simpanFile();
 
 // Fungsi untuk menambahkan data dokter baru
 void tambahDokter();
